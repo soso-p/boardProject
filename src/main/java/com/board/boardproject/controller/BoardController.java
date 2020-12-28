@@ -18,4 +18,12 @@ public class BoardController {
         model.addAttribute("user", user);
         return "index";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/users/new")
+    public String joinUser() { return "joinUser"; }
 }

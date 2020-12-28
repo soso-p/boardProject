@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>welcome page</title>
@@ -20,13 +20,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/login}" th:if="${session.loginId} == null">로그인</a>
+                <a class="nav-link" th:href="@{/login}">로그인</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/logout}" th:unless="${session.loginId} == null">로그아웃</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/users/new}" th:if="${session.loginId} == null">회원가입</a>
+                <a class="nav-link" th:href="@{/users/new}">회원가입</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" th:if="${user} != null" th:href="@{/(user=${user})}">Home <span class="sr-only">(current)</span></a>
@@ -44,14 +41,20 @@
     </div>
 </nav>
 
+<!-- 회원가입 폼 -->
 <div class="container">
-    <h1 class="text-center" th:if="${session.loginId} != null" th:text="${session.loginId} + '!! 커뮤니티에 오신 것을 환영합니다!'">게시판에 오신 것을 환영합니다!</h1>
-    <h1 class="text-center" th:unless="${session.loginId} != null" th:text="'커뮤니티에 오신 것을 환영합니다!'">게시판에 오신 것을 환영합니다.</h1>
+    <div class="alert alert-warning" role="alert" th:text="${message}" th:if="${message} != null"></div>
+    <form method="post" th:action="@{/joinUser}">
+        <div class="form-group">
+            <label for="id">id</label>
+            <input class="form-control" type="text" name="id" id="id"/>
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" class="form-control" id="password" name="password"/>
+        </div>
+        <button type="submit" value="로그인" class="btn btn-primary">회원가입</button>
+    </form>
 </div>
-
-<!-- 부트스트랩 js -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>
