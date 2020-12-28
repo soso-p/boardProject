@@ -20,18 +20,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/login}">로그인</a>
+                <a class="nav-link" th:href="@{/login}" th:if="${session.loginId} == null">로그인</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/users/new}">회원가입</a>
+                <a class="nav-link" th:href="@{/logout}" th:unless="${session.loginId} == null">로그아웃</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/users/new}" th:if="${session.loginId} == null">회원가입</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" th:if="${user} != null" th:href="@{/(user=${user})}">Home <span class="sr-only">(current)</span></a>
-                <a class="nav-link" th:unless="${user} != null" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:if="${user} != null" th:href="@{/board(user=${user})}">게시판</a>
-                <a class="nav-link" th:unless="${user} != null" th:href="@{/board}">게시판</a>
+                <a class="nav-link" th:href="@{/boardList}">게시판</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">

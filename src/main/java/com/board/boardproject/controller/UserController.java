@@ -17,6 +17,14 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/users/new")
+    public String joinUser() { return "joinUser"; }
+
     @PostMapping("/loginUser")
     public String login(User user, Model model, HttpSession session) {
         boolean result = userService.login(user);
