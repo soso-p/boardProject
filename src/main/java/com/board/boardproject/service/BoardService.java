@@ -25,8 +25,8 @@ public class BoardService {
         return true;
     }
 
-    public boolean deleteBoard(Board board) {
-        boolean result = boardRepository.delete(board.getId());
+    public boolean deleteBoard(long boardId) {
+        boolean result = boardRepository.delete(boardId);
         if (result) {
             return true;
         }
@@ -43,6 +43,12 @@ public class BoardService {
         else {
             return false;
         }
+    }
+
+    public Board findById(long boardId) {
+        Board board = boardRepository.findById(boardId).get();
+        //board.setContent(board.getContent().replaceAll("\n", "<br>"));
+        return board;
     }
 
     public int getAllBoardCount() {

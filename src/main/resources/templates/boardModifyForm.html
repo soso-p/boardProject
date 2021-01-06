@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>board list</title>
+    <title>board modify</title>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -42,44 +42,32 @@
     </div>
 </nav>
 
-<!-- 게시판 리스트 출력 -->
 <div class="container">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th scope="col">번호</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">날짜</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="board : ${boardList}" th:if="${boardList} != null">
-            <th scope="row" th:text="${board.id}">1</th>
-            <td><a th:href="@{/board/{boardId}(boardId = ${board.id})}" th:text="${board.title}">Mark</a></td>
-            <td th:text="${board.writerId}">Otto</td>
-            <td th:text="${board.create_date}">@mdo</td>
-        </tr>
-        <tr th:unless="${boardList} != null">
-            <th scope="row" colspan="4" class="text-center">게시글이 존재하지 않습니다.</th>
-        </tr>
-        </tbody>
-    </table>
-    <a class="btn btn-primary" th:href="@{/boardWrite}" role="button" th:if="${session.loginId} != null">글 작성</a>
-
-    <!-- 페이지 번호 버튼 -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end" th:with="startPage=${paging.startPage}, endPage=${paging.endPage}">
-            <li class="page-item"><a class="page-link" th:href="@{boardList(nowPage=${paging.startPage}-1)}" th:if="${paging.startPage} > 1">이전페이지</a></li>
-            <th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
-                <li class="page-item"><a class="page-link" th:href="@{/boardList(nowPage=${pageNum})}" th:text="${pageNum}">1</a></li>
-            </th:block>
-            <li class="page-item"><a class="page-link" href="#" th:if="${paging.endPage} < ${paging.lastPage}">이후페이지</a></li>
-        </ul>
-    </nav>
+    <form method="post" th:action="@{/boardUpdate(boardId = ${board.id})}">
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input class="form-control" type="text" name="title" id="title" th:value="${board.title}" readonly/>
+        </div>
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea class="form-control" id="content" name="content" rows="10" style="resize: none;" th:text="${board.content}"></textarea>
+        </div>
+        <input class="form-control invisible" type="text" name="writerId" th:value="${session.loginId}"/>
+        <button type="submit" value="글 작성" class="btn btn-primary">글 수정</button>
+    </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- 글자 수 제한 -->
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#content').on('keyup', function() {
+        if($(this).val().length > 500) {
+            $(this).val($(this).val().substring(0, 500));
+        }
+    });
+});
+</script>
 </body>
 </html>

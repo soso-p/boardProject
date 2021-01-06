@@ -1,10 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>board list</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
+<!-- 상단 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" th:if="${user} != null" th:href="@{/(user=${user})}">커뮤니티</a>
+    <a class="navbar-brand" th:unless="${user} != null" th:href="@{/}">커뮤니티</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/login}" th:if="${session.loginId} == null">로그인</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}" th:unless="${session.loginId} == null">로그아웃</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/users/new}" th:if="${session.loginId} == null">회원가입</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/boardList}">게시판</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+        </form>
+    </div>
+</nav>
+
+<!-- 게시판 내용 출력 -->
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col" th:text="${board.id}" class="text-center">번호</th>
+            <th scope="col" width="60%" class="text-center" th:text="${board.title}">제목</th>
+            <th scope="col" th:text="'작성자 : ' + ${board.writerId}" class="text-center">작성자</th>
+            <th scope="col" th:text="${board.create_date}" class="text-center">날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="4" th:text="${board.content}" style="white-space:pre;"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" th:href="@{/boardModify(boardId=${board.id})}" role="button" th:if="${board.writerId} == ${session.loginId}">글 수정</a>
+    <a class="btn btn-primary" th:href="@{/boardDelete(boardId=${board.id})}" role="button" th:if="${board.writerId} == ${session.loginId}">글 삭제</a>
+</div>
+<div class="container" th:if="${session.loginId} != null">
+    <form method="post" class="form-inline" th:action="@{/commentCreate(boardId=${board.id})&&(writerId=${session.loginId})}">
+            <textarea style="resize: none;width:90%;border:1;overflow:visible;text-overflow:ellipsis;" class="form-control" name="comment" rows="3" id="comment"></textarea>
+            <button type="submit" value="댓글 등록" class="btn btn-primary">댓글 등록</button>
+    </form>
+</div>
+
+<div class="container" th:if="${commentList} != null">
+    <table class="table">
+        <tbody>
+        <tr th:each="comment : ${commentList}">
+            <td th:text="${comment.writer_id}"></td>
+            <td colspan="4" ><xmp th:text="${comment.content}"></xmp></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>

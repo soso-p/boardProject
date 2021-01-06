@@ -210,6 +210,42 @@ public class JdbcBoardRepository implements BoardRepository {
         }
     }
 
+    @Override
+    public Optional<Board> findById(long boardId) {
+        String sql = "select * from board where isDeleted = 0 and id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = dataSource.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, boardId);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Board board = new Board();
+                board.setId(rs.getLong("id"));
+                board.setTitle(rs.getString("title"));
+                board.setContent(rs.getString("content"));
+                board.setDeleted(rs.getBoolean("isDeleted"));
+                board.setCreate_date(rs.getDate("create_date"));
+                board.setWriterId(rs.getString("writer_id"));
+
+                return Optional.of(board);
+            }
+
+            return Optional.empty();
+
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);
     }

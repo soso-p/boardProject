@@ -14,4 +14,5 @@ public interface BoardRepository {
     List<Board> findPage(int start, int end);
     Optional<Board> findByTitle(String title);
     int findAllCount();
+    Optional<Board> findById(long boardId);
 }
