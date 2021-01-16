@@ -43,7 +43,7 @@
 </nav>
 
 <div class="container">
-    <form method="post" th:action="@{/boardUpdate(boardId = ${board.id})}">
+    <form th:method="put" th:action="@{/boardModify(boardId = ${board.id})}">
         <div class="form-group">
             <label for="title">제목</label>
             <input class="form-control" type="text" name="title" id="title" th:value="${board.title}" readonly/>

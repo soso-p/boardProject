@@ -34,13 +34,16 @@ public class Paging {
 
     // 시작, 끝 페이지 계산
     public void calculateStartEndPage(int nowPage, int cntPage) {
-        setEndPage(((int)Math.ceil((double)nowPage / (double)cntPage)) * cntPage);
+        // 현재페이지의 2 페이지 앞부터, 2페이지 뒤까지 버튼에 나오도록 설정
+        //setEndPage(((int)Math.ceil((double)nowPage / (double)cntPage)) * cntPage);
+        setEndPage((int)nowPage+2);
 
         if (getLastPage() < getEndPage()) {
             setEndPage(getLastPage());
         }
 
-        setStartPage(getEndPage() - cntPage + 1);
+        //setStartPage(getEndPage() - cntPage + 1);
+        setStartPage(nowPage-2);
         if (getStartPage() < 1) {
             setStartPage(1);
         }

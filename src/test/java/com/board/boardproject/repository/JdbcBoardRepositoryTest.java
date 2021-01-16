@@ -1,18 +1,23 @@
 package com.board.boardproject.repository;
 
 import com.board.boardproject.domain.Board;
+import com.board.boardproject.service.BoardService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 @Transactional
+@SpringBootTest
 class JdbcBoardRepositoryTest {
 
     @Autowired
@@ -23,7 +28,7 @@ class JdbcBoardRepositoryTest {
         // given
         Board board = new Board();
         board.setWriterId("test");
-        board.setTitle("테스트 제목");
+        board.setTitle("테스트 중!!!");
         board.setContent("테스트 내용");
 
         // when

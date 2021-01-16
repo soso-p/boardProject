@@ -5,6 +5,7 @@ import com.board.boardproject.domain.Paging;
 import com.board.boardproject.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -16,6 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class JdbcBoardRepository implements BoardRepository {
 
     private final DataSource dataSource;
@@ -104,11 +106,13 @@ public class JdbcBoardRepository implements BoardRepository {
         }
     }
 
+    // 게시글 전체 가져오기 (미구현)
     @Override
     public List<Board> findAll() {
         return null;
     }
 
+    // 게시글 전체 개수
     @Override
     public int findAllCount() {
         String sql = "select count(*) as count from board where isDeleted = 0";
@@ -136,7 +140,7 @@ public class JdbcBoardRepository implements BoardRepository {
         }
     }
 
-    // 게시글 불러오기
+    // 게시글 불러오기 (페이지별로)
     @Override
     public List<Board> findPage(int start, int end) {
         String sql = "select * from board where isDeleted = 0 order by id DESC LIMIT ?, ?";
@@ -175,6 +179,7 @@ public class JdbcBoardRepository implements BoardRepository {
         }
     }
 
+    // 제목으로 가져오기
     public Optional<Board> findByTitle(String title) {
         String sql = "select * from board where isDeleted = 0 and title = ?";
 
@@ -210,6 +215,7 @@ public class JdbcBoardRepository implements BoardRepository {
         }
     }
 
+    // 게시글 번호로 가져오기
     @Override
     public Optional<Board> findById(long boardId) {
         String sql = "select * from board where isDeleted = 0 and id = ?";
@@ -246,10 +252,12 @@ public class JdbcBoardRepository implements BoardRepository {
         }
     }
 
+    // connection 가져오기
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);
     }
 
+    // 닫기
     private void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
         try {
             if (rs != null) {

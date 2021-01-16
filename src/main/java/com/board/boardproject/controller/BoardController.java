@@ -38,36 +38,42 @@ public class BoardController {
     @GetMapping("/board/{boardId}")
     public String board(@PathVariable("boardId") long boardId, Model model) {
         Board board = boardService.findById(boardId);
+        model.addAttribute("boardId", boardId);
         model.addAttribute("board", board);
         return "board";
     }
 
+    // 게시글 삭제
     @GetMapping("/boardDelete")
     public String boardDelete(@RequestParam(value = "boardId") long boardId) {
         boolean result = boardService.deleteBoard(boardId);
         return "redirect:boardList";
     }
 
+    // 게시글 작성 폼 반환
     @GetMapping("/boardWrite")
-    public String boardWrite() {
+    public String boardWriteForm() {
         return "boardWrite";
     }
 
-    @PostMapping("/boardCreate")
-    public String boardCreate(Board board) {
+    // 게시글 등록
+    @PostMapping("/boardWrite")
+    public String boardWrite(Board board) {
         boardService.saveBoard(board);
         return "redirect:boardList";
     }
 
+    // 게시글 수정 폼 반환
     @GetMapping("/boardModify")
-    public String boardModify(@RequestParam(value = "boardId") long boardId, Model model) {
+    public String boardModifyForm(@RequestParam(value = "boardId") long boardId, Model model) {
         Board board = boardService.findById(boardId);
         model.addAttribute("board", board);
         return "boardModifyForm";
     }
 
-    @PostMapping("/boardUpdate")
-    public String boardUpdate(@RequestParam(value = "boardId") long boardId, Board board) {
+    // 게시글 수정
+    @PutMapping("/boardModify")
+    public String boardModify(@RequestParam(value = "boardId") long boardId, Board board) {
         board.setId(boardId);
         boardService.modifyBoard(board);
         return "redirect:boardList";

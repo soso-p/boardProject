@@ -74,7 +74,7 @@
             <th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
                 <li class="page-item"><a class="page-link" th:href="@{/boardList(nowPage=${pageNum})}" th:text="${pageNum}">1</a></li>
             </th:block>
-            <li class="page-item"><a class="page-link" href="#" th:if="${paging.endPage} < ${paging.lastPage}">이후페이지</a></li>
+            <li class="page-item"><a class="page-link" th:href="@{/boardList(nowPage=${endPage}+1)}" th:if="${paging.endPage} < ${paging.lastPage}">이후페이지</a></li>
         </ul>
     </nav>
 </div>
