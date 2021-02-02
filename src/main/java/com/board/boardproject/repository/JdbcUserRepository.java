@@ -20,7 +20,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
         String sql = "insert into user(id, password) values(?, ?)";
 
         Connection conn = null;
@@ -35,7 +35,7 @@ public class JdbcUserRepository implements UserRepository {
 
             pstmt.executeUpdate();
 
-            return user;
+            //return user;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         } finally {
