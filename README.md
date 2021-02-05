@@ -33,3 +33,6 @@ _____________
 ![Untitled (9)](https://user-images.githubusercontent.com/55385825/107005538-2f0be080-67d3-11eb-91e2-544055c5dc70.png)
 ______________
 - 특수 문자 처리
+
+## DB 스키마
+![image](https://user-images.githubusercontent.com/55385825/107006370-6038e080-67d4-11eb-83ad-f47efa4e2989.png)
