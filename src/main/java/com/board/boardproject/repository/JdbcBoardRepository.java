@@ -30,7 +30,7 @@ public class JdbcBoardRepository implements BoardRepository {
     // 게시글 등록
    @Override
     public Optional<Board> save(Board board) {
-        String sql = "insert into board(title, content, create_date, writer_id) value(?, ?, now(), ?)";
+        String sql = "insert into board(title, content, create_date, writerId) value(?, ?, now(), ?)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -165,7 +165,7 @@ public class JdbcBoardRepository implements BoardRepository {
                 board.setContent(rs.getString("content"));
                 board.setDeleted(rs.getBoolean("isDeleted"));
                 board.setCreate_date(rs.getDate("create_date"));
-                board.setWriterId(rs.getString("writer_id"));
+                board.setWriterId(rs.getString("writerId"));
 
                 boardList.add(board);
             }
@@ -201,7 +201,7 @@ public class JdbcBoardRepository implements BoardRepository {
                 board.setContent(rs.getString("content"));
                 board.setDeleted(rs.getBoolean("isDeleted"));
                 board.setCreate_date(rs.getDate("create_date"));
-                board.setWriterId(rs.getString("writer_id"));
+                board.setWriterId(rs.getString("writerId"));
 
                 return Optional.of(board);
             }
@@ -238,7 +238,7 @@ public class JdbcBoardRepository implements BoardRepository {
                 board.setContent(rs.getString("content"));
                 board.setDeleted(rs.getBoolean("isDeleted"));
                 board.setCreate_date(rs.getDate("create_date"));
-                board.setWriterId(rs.getString("writer_id"));
+                board.setWriterId(rs.getString("writerId"));
 
                 return Optional.of(board);
             }

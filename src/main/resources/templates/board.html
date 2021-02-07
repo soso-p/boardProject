@@ -50,7 +50,7 @@
             <th scope="col" th:text="${board.id}" class="text-center">번호</th>
             <th scope="col" width="60%" class="text-center" th:text="${board.title}">제목</th>
             <th scope="col" th:text="'작성자 : ' + ${board.writerId}" class="text-center">작성자</th>
-            <th scope="col" th:text="${board.create_date}" class="text-center">날짜</th>
+            <th scope="col" th:text="${#calendars.format(board.create_date,'yyyy-MM-dd')}" class="text-center">날짜</th>
         </tr>
         </thead>
         <tbody>

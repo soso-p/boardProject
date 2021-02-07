@@ -49,9 +49,11 @@ public class SpringConfig {
         return new JdbcBoardRepository(dataSource);
     }
 
+    /*
     @Bean
     public BoardService boardService() {
         return new BoardService(boardRepository());
     }
+    */
 
 }

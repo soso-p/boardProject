@@ -58,9 +58,16 @@ public class BoardController {
 
     // 게시글 등록
     @PostMapping("/boardWrite")
-    public String boardWrite(Board board) {
-        boardService.saveBoard(board);
-        return "redirect:boardList";
+    public String boardWrite(Model model, Board board) {
+        if (board.getTitle().equals("")|| board.getContent().equals("")) {
+            model.addAttribute("error", "제목과 내용을 작성해주세요.");
+            model.addAttribute("board", board);
+            return "boardWrite";
+        }
+        else {
+            boardService.saveBoard(board);
+            return "redirect:boardList";
+        }
     }
 
     // 게시글 수정 폼 반환

@@ -2,6 +2,7 @@ package com.board.boardproject.service;
 
 import com.board.boardproject.domain.User;
 import com.board.boardproject.repository.JdbcUserRepository;
+import com.board.boardproject.repository.UserMapper;
 import com.board.boardproject.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -22,13 +24,14 @@ import static org.junit.jupiter.api.Assertions.*;
 // @Autowired를 사용하기 위해선 두 개의 어노테이션이 필요
 @ExtendWith(SpringExtension.class)
 @SpringBootTest // @SpringBootApplication을 찾아서 테스트를 위한 bean들을 다 생성
+@Transactional
 class UserServiceTest {
 
     @Autowired
     UserService userService;
 
     @Autowired
-    UserRepository userRepository;
+    UserMapper userMapper;
 
     @Test
     void findOne() {
@@ -49,5 +52,25 @@ class UserServiceTest {
 
         boolean result = userService.login(user);
         Assertions.assertThat(result).isEqualTo(true);
+    }
+
+    @Test
+    void join() {
+        User user = new User();
+        user.setId("usertest");
+        user.setPassword("usertest1234");
+
+        boolean result = userService.join(user);
+        Assertions.assertThat(result).isEqualTo(true);
+    }
+
+    @Test
+    void joinException() {
+        User user = new User();
+        user.setId("test");
+        user.setPassword("test1234");
+
+        boolean result = userService.join(user);
+        Assertions.assertThat(result).isEqualTo(false);
     }
 }

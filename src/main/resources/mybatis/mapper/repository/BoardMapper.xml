@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.boardproject.repository.BoardMapper">
+    <insert id="save" parameterType="com.board.boardproject.domain.Board" useGeneratedKeys="true" keyProperty="id">
+        insert into board(title, content, create_date, writerId) value(#{board.title}, #{board.content}, curdate(), #{board.writerId});
+    </insert>
+    <update id="delete" parameterType="long">
+        update board set isDeleted = 1 where id = #{id};
+    </update>
+    <update id="modify" parameterType="com.board.boardproject.domain.Board">
+        update board set content = #{board.content} where id = #{board.id};
+    </update>
+    <select id="findAllCount" resultType="int">
+        select count(*) as count from board where isDeleted = 0
+    </select>
+    <select id="findPage" resultType="com.board.boardproject.domain.Board" parameterType="int">
+        select * from board where isDeleted = 0 order by id DESC LIMIT #{start}, #{end};
+    </select>
+    <select id="findByTitle" parameterType="String" resultType="com.board.boardproject.domain.Board">
+        select * from board where isDeleted = 0 and title = #{title};
+    </select>
+    <select id="findById" parameterType="long" resultType="com.board.boardproject.domain.Board">
+        select * from board where isDeleted = 0 and id = #{boardId};
+    </select>
+</mapper>
