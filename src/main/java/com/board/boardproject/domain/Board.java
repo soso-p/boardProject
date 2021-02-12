@@ -1,5 +1,6 @@
 package com.board.boardproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
@@ -9,6 +10,7 @@ public class Board {
     private long id;
     private String title;
     private String content;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date create_date;
     private boolean isDeleted;
     private String writerId;

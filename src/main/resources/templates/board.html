@@ -59,8 +59,10 @@
             </tr>
         </tbody>
     </table>
-    <a class="btn btn-primary" th:href="@{/boardModify(boardId=${board.id})}" role="button" th:if="${board.writerId} == ${session.loginId}">글 수정</a>
-    <a class="btn btn-primary" th:href="@{/boardDelete(boardId=${board.id})}" role="button" th:if="${board.writerId} == ${session.loginId}">글 삭제</a>
+    <form th:method="delete" class="form-inline" th:action="@{/board/{boardId}(boardId=${board.id})}" th:if="${board.writerId} == ${session.loginId}">
+        <a class="btn btn-primary" th:href="@{/boardModify(boardId=${board.id})}" role="button" th:if="${board.writerId} == ${session.loginId}">글 수정</a>
+        <button type="submit" value="글 삭제" class="btn btn-primary">글 삭제</button>
+    </form>
 </div>
 <div class="container" th:if="${session.loginId} != null">
     <form method="post" class="form-inline" th:action="@{/commentCreate(boardId=${board.id})&&(writerId=${session.loginId})}">
