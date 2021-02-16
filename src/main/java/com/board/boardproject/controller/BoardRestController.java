@@ -4,12 +4,12 @@ import com.board.boardproject.domain.Board;
 import com.board.boardproject.domain.Paging;
 import com.board.boardproject.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -37,5 +37,42 @@ public class BoardRestController {
         model.addAttribute("boardList", boardService.findPage(paging));
 
         return boardService.findPage(paging);
+    }
+
+    // 게시글 등록
+    @PostMapping("/board2")
+    public ResponseEntity<HttpStatus> boardWrite(Board board) {
+        boolean result = boardService.saveBoard(board);
+        System.out.println("후후후후");
+        if (result)
+            return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+        else
+            return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/board2/{boardId}")
+    public HttpStatus boardModify(@PathVariable("boardId") long boardId, Board board) {
+        board.setId(boardId);
+        boolean result = boardService.modifyBoard(board);
+        if (result) {
+            System.out.println("완료");
+            return HttpStatus.OK;
+        }
+        else {
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
+
+    // 게시글 삭제
+    @DeleteMapping("/board2/{boardId}")
+    public HttpStatus boardDelete(@PathVariable("boardId") long boardId) {
+        boolean result = boardService.deleteBoard(boardId);
+        if (result) {
+            System.out.println("완료");
+            return HttpStatus.OK;
+        }
+        else {
+            return HttpStatus.BAD_REQUEST;
+        }
     }
 }
