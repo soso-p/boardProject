@@ -2,6 +2,8 @@ package com.board.boardproject.controller;
 
 import com.board.boardproject.domain.Board;
 import com.board.boardproject.domain.Paging;
+import com.board.boardproject.domain.User;
+import com.board.boardproject.repository.UserRepositorySupport;
 import com.board.boardproject.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -21,6 +23,9 @@ public class BoardController {
 
     @Autowired
     BoardService boardService;
+
+    @Autowired
+    UserRepositorySupport userRepositorySupport;
 
     @GetMapping("/boardList")
     public String boardList(@RequestParam(value = "nowPage", required = false) String nowPage, Model model) {
