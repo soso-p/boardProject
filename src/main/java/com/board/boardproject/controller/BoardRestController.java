@@ -43,7 +43,6 @@ public class BoardRestController {
     @PostMapping("/board2")
     public ResponseEntity<HttpStatus> boardWrite(Board board) {
         boolean result = boardService.saveBoard(board);
-        System.out.println("후후후후");
         if (result)
             return new ResponseEntity<HttpStatus>(HttpStatus.OK);
         else
@@ -55,7 +54,6 @@ public class BoardRestController {
         board.setId(boardId);
         boolean result = boardService.modifyBoard(board);
         if (result) {
-            System.out.println("완료");
             return HttpStatus.OK;
         }
         else {
@@ -68,7 +66,6 @@ public class BoardRestController {
     public HttpStatus boardDelete(@PathVariable("boardId") long boardId) {
         boolean result = boardService.deleteBoard(boardId);
         if (result) {
-            System.out.println("완료");
             return HttpStatus.OK;
         }
         else {
