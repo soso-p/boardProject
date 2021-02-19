@@ -20,7 +20,6 @@ import java.util.Map;
 
 @Controller
 public class BoardController {
-
     @Autowired
     BoardService boardService;
 
@@ -52,6 +51,12 @@ public class BoardController {
         List<Board> boardList = template.getForObject("https://localhost:8081/boardList2?nowPage="+paging.getNowPage(), List.class);
         model.addAttribute("paging", paging);
         model.addAttribute("boardList", boardList);
+
+        List<User> userList = userRepositorySupport.findAll();
+        for (int i=0;i< userList.size();i++) {
+            User user = userList.get(i);
+            System.out.println("id: " + user.getId() + " / password: " + user.getPassword());
+        }
 
         return "boardList";
     }
