@@ -72,4 +72,10 @@ public class BoardRestController {
             return HttpStatus.BAD_REQUEST;
         }
     }
+
+    // 게시글 불러오기
+    @GetMapping("/board2/{boardId}")
+    public Board board(@PathVariable("boardId") long boardId) {
+        return boardService.findById(boardId);
+    }
 }

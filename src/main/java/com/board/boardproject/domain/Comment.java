@@ -3,8 +3,9 @@ package com.board.boardproject.domain;
 public class Comment {
     private long id;
     private String content;
-    private long board_id;
-    private String writer_id;
+    private long boardId;
+    private String writerId;
+    private boolean isDeleted;
 
     public long getId() {
         return id;
@@ -22,19 +23,19 @@ public class Comment {
         this.content = content;
     }
 
-    public long getBoard_id() {
-        return board_id;
+    public long getBoardId() {
+        return boardId;
     }
 
-    public void setBoard_id(long board_id) {
-        this.board_id = board_id;
+    public void setBoardId(long boardId) {
+        this.boardId = boardId;
     }
 
-    public String getWriter_id() {
-        return writer_id;
+    public String getWriterId() {
+        return writerId;
     }
 
-    public void setWriter_id(String writer_id) {
-        this.writer_id = writer_id;
+    public void setWriterId(String writerId) {
+        this.writerId = writerId;
     }
 }

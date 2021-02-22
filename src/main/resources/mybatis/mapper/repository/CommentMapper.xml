@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.boardproject.repository.CommentMapper">
+    <insert id="save" parameterType="com.board.boardproject.domain.Comment" useGeneratedKeys="true" keyProperty="id">
+        insert into comment(boardId, content, writerId) values(#{comment.boardId}, #{comment.content}, #{comment.writerId});
+    </insert>
+    <update id="delete" parameterType="long">
+        update comment set isDeleted = 1 where id = #{id};
+    </update>
+    <select id="findAll" resultType="com.board.boardproject.domain.Comment">
+        select * from comment;
+    </select>
+    <select id="findByBoardId" parameterType="long" resultType="com.board.boardproject.domain.Comment">
+        select * from comment where isDeleted = 0 and boardId = #{boardId};
+    </select>
+    <select id="findById" parameterType="long" resultType="com.board.boardproject.domain.Comment">
+        select * from comment where isDeleted = 0 and id = #{id};
+    </select>
+</mapper>

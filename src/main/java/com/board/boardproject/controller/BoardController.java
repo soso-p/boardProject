@@ -1,10 +1,12 @@
 package com.board.boardproject.controller;
 
 import com.board.boardproject.domain.Board;
+import com.board.boardproject.domain.Comment;
 import com.board.boardproject.domain.Paging;
 import com.board.boardproject.domain.User;
 import com.board.boardproject.repository.UserRepositorySupport;
 import com.board.boardproject.service.BoardService;
+import com.board.boardproject.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,7 @@ public class BoardController {
     BoardService boardService;
 
     @Autowired
-    UserRepositorySupport userRepositorySupport;
+    CommentService commentService;
 
     @GetMapping("/boardList")
     public String boardList(@RequestParam(value = "nowPage", required = false) String nowPage, Model model) {
@@ -52,21 +54,34 @@ public class BoardController {
         model.addAttribute("paging", paging);
         model.addAttribute("boardList", boardList);
 
-        List<User> userList = userRepositorySupport.findAll();
-        for (int i=0;i< userList.size();i++) {
-            User user = userList.get(i);
-            System.out.println("id: " + user.getId() + " / password: " + user.getPassword());
-        }
-
         return "boardList";
     }
 
     @GetMapping("/board/{boardId}")
     public String board(@PathVariable("boardId") long boardId, Model model) {
+        /*
         Board board = boardService.findById(boardId);
+        List<Comment> commentList = commentService.findByBoardId(boardId);
         model.addAttribute("boardId", boardId);
         model.addAttribute("board", board);
-        return "board";
+        if (commentList != null) {
+            model.addAttribute("commentList", commentList);
+        }
+
+         */
+        try {
+            RestTemplate template = new RestTemplate();
+            Board board = template.getForObject("https://localhost:8081/board2/" + boardId, Board.class);
+            model.addAttribute("boardId", boardId);
+            model.addAttribute("board", board);
+            List<Comment> commentList = template.getForObject("https://localhost:8081/board/" + boardId + "/comment", List.class);
+            if (commentList != null) {
+                model.addAttribute("commentList", commentList);
+            }
+            return "board";
+        } catch (Exception e) {
+
+        }
     }
 
     // 게시글 삭제
@@ -122,7 +137,8 @@ public class BoardController {
     // 게시글 수정 폼 반환
     @GetMapping("boardModify")
     public String boardModifyForm(@RequestParam(value = "boardId") long boardId, Model model) {
-        Board board = boardService.findById(boardId);
+        RestTemplate template = new RestTemplate();
+        Board board = template.getForObject("https://localhost:8081/board2/"+boardId, Board.class);
         model.addAttribute("board", board);
         return "boardModifyForm";
     }

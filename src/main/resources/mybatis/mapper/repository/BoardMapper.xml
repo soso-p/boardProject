@@ -4,7 +4,7 @@
 
 <mapper namespace="com.board.boardproject.repository.BoardMapper">
     <insert id="save" parameterType="com.board.boardproject.domain.Board" useGeneratedKeys="true" keyProperty="id">
-        insert into board(title, content, create_date, writerId) value(#{board.title}, #{board.content}, curdate(), #{board.writerId});
+        insert into board(title, content, create_date, writerId) values(#{board.title}, #{board.content}, curdate(), #{board.writerId});
     </insert>
     <update id="delete" parameterType="long">
         update board set isDeleted = 1 where id = #{id};

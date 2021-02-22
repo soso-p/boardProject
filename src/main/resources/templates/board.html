@@ -47,39 +47,45 @@
 
 <!-- 게시판 내용 출력 -->
 <div class="container">
-    <table class="table table-bordered">
+    <table class="table table-bordered mb-1">
         <thead>
         <tr>
-            <th scope="col" th:text="${board.id}" class="text-center">번호</th>
-            <th scope="col" width="60%" class="text-center" th:text="${board.title}">제목</th>
-            <th scope="col" th:text="'작성자 : ' + ${board.writerId}" class="text-center">작성자</th>
-            <th scope="col" th:text="${#calendars.format(board.create_date,'yyyy-MM-dd')}" class="text-center">날짜</th>
+            <th scope="col" th:text="${board.id}" class="text-center align-middle">번호</th>
+            <th scope="col" width="60%" class="text-center align-middle" th:text="${board.title}">제목</th>
+            <th scope="col" th:text="'작성자 : ' + ${board.writerId}" class="text-center align-middle">작성자</th>
+            <th scope="col" th:text="${#calendars.format(board.create_date,'yyyy-MM-dd')}" class="text-center align-middle">날짜</th>
         </tr>
         </thead>
         <tbody>
             <tr>
-                <td colspan="4" th:text="${board.content}" style="white-space:pre;"></td>
+                <td colspan="4" th:text="${board.content}" style="white-space:pre-wrap;"></td>
             </tr>
         </tbody>
     </table>
     <form th:method="delete" class="form-inline" th:action="@{/board/{boardId}(boardId=${board.id})}" th:if="${board.writerId} == ${session.loginId}">
         <a class="btn btn-primary" th:href="@{/boardModify(boardId=${board.id})}" role="button" th:if="${board.writerId} == ${session.loginId}">글 수정</a>
-        <button type="submit" value="글 삭제" class="btn btn-primary">글 삭제</button>
+        <button type="submit" value="글 삭제" class="btn btn-primary ml-1">글 삭제</button>
     </form>
 </div>
-<div class="container" th:if="${session.loginId} != null">
-    <form method="post" class="form-inline" th:action="@{/commentCreate(boardId=${board.id})&&(writerId=${session.loginId})}">
-            <textarea style="resize: none;width:90%;border:1;overflow:visible;text-overflow:ellipsis;" class="form-control" name="comment" rows="3" id="comment"></textarea>
-            <button type="submit" value="댓글 등록" class="btn btn-primary">댓글 등록</button>
+<div class="container my-1" th:if="${session.loginId} != null">
+    <form method="post" class="form-inline" th:action="@{/comment/{boardId}(boardId=${board.id})}">
+            <textarea style="resize: none;width:100%;border:1;overflow:visible;text-overflow:ellipsis;" class="form-control" name="content" rows="3" id="content"></textarea>
+            <button type="submit" value="댓글 등록" class="btn btn-primary btn-block">댓글 등록</button>
     </form>
 </div>
 
-<div class="container" th:if="${commentList} != null">
-    <table class="table">
+<!-- 댓글 출력 -->
+<div class="container mt-3" th:if="${commentList} != null">
+    <table class="table table-stripted table-sm">
         <tbody>
-        <tr th:each="comment : ${commentList}">
-            <td th:text="${comment.writer_id}"></td>
-            <td colspan="4" ><xmp th:text="${comment.content}"></xmp></td>
+        <tr th:each="comment : ${commentList}" height="10">
+            <th scope="row" width="7%" th:text="${comment.writerId}" class="text-center align-middle"></th>
+            <td width="85%" th:text="${comment.content}" class="text-left align-middle" style="white-space:pre-wrap;"></td>
+            <td width="8%" class="align-middle mx-auto">
+            <form th:method="delete" class="form-inline" th:action="@{/comment/{commentId}(commentId=${comment.id})}" th:if="${comment.writerId} == ${session.loginId}">
+                <button type="submit" value="글 삭제" class="btn btn-outline-primary btn-sm btn-block">댓글 삭제</button>
+            </form>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -88,4 +94,14 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script type="text/javascript" src="../js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 </body>
+<!-- 글자 수 제한 -->
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#content').on('keyup', function() {
+        if($(this).val().length > 300) {
+            $(this).val($(this).val().substring(0, 300));
+        }
+    });
+});
+</script>
 </html>
