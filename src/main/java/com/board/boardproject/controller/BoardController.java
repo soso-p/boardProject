@@ -80,7 +80,7 @@ public class BoardController {
             }
             return "board";
         } catch (Exception e) {
-
+            return "nonFindBoard";
         }
     }
 
