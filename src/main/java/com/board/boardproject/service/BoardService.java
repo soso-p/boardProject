@@ -78,7 +78,12 @@ public class BoardService {
     }
 
     public List<Board> findPage(Paging paging) {
-        return boardMapper.findPage(paging.getStart(), paging.getEnd());
+        try {
+            List<Board> boardList = boardMapper.findPage(paging.getStart(), paging.getEnd());
+            return boardList;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

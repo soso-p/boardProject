@@ -15,7 +15,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +51,18 @@ public class BoardController {
 
         return "boardList";
          */
-        RestTemplate template = new RestTemplate();
-        List<Board> boardList = template.getForObject("https://localhost:8081/boardList2?nowPage="+paging.getNowPage(), List.class);
-        model.addAttribute("paging", paging);
-        model.addAttribute("boardList", boardList);
 
-        return "boardList";
+        try {
+            RestTemplate template = new RestTemplate();
+            List<Board> boardList = template.getForObject("https://localhost:8081/boardList2?nowPage=" + paging.getNowPage(), List.class);
+            if (boardList != null) {
+                model.addAttribute("boardList", boardList);
+            }
+            model.addAttribute("paging", paging);
+            return "boardList";
+        } catch(Exception e) {
+            return "boardList";
+        }
     }
 
     @GetMapping("/board/{boardId}")
@@ -108,11 +116,12 @@ public class BoardController {
 
     // 게시글 등록
     @PostMapping("/board")
-    public String boardWrite(Model model, Board board) {
+    public String boardWrite(Model model, Board board, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (board.getTitle().equals("")|| board.getContent().equals("")) {
-            model.addAttribute("error", "제목과 내용을 작성해주세요.");
-            model.addAttribute("board", board);
-            return "boardWrite";
+            String referer = request.getHeader("Referer");
+            redirectAttributes.addFlashAttribute("error", "제목과 내용을 작성해주세요.");
+            redirectAttributes.addFlashAttribute("board", board);
+            return "redirect:" + referer;
         }
         else {
             /*
@@ -145,12 +154,17 @@ public class BoardController {
 
     // 게시글 수정
     @PutMapping("/board/{boardId}")
-    public String boardModify(@PathVariable("boardId") long boardId, Board board) {
+    public String boardModify(@PathVariable("boardId") long boardId, Board board, Model model, HttpServletRequest request) {
         /*
         board.setId(boardId);
         boardService.modifyBoard(board);
 
          */
+
+        if (board.getContent().equals("")) {
+            String referer = request.getHeader("Referer");
+            return "redirect:" + referer;
+        }
         RestTemplate template = new RestTemplate();
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("title", board.getTitle());

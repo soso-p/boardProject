@@ -70,7 +70,12 @@
 <!-- 글자 수 제한 -->
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#content').on('keyup', function() {
+    $('#contentUse').on('keyup', function() {
+        if($(this).val().length > 500) {
+            $(this).val($(this).val().substring(0, 500));
+        }
+    });
+    $('#contentNotUse').on('keyup', function() {
         if($(this).val().length > 500) {
             $(this).val($(this).val().substring(0, 500));
         }

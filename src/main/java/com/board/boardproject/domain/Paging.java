@@ -47,6 +47,11 @@ public class Paging {
         if (getStartPage() < 1) {
             setStartPage(1);
         }
+
+        // endPage가 startPage보다 크면 endPage를 startPage와 같게 설정
+        if (getStartPage() > getEndPage()) {
+            setEndPage(getStartPage());
+        }
     }
 
     // DB 쿼리에서 사용할 start, end값 계산

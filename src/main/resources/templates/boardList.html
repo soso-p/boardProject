@@ -71,15 +71,17 @@
     <a class="btn btn-primary" th:href="@{/boardWrite}" role="button" th:if="${session.loginId} != null">글 작성</a>
 
     <!-- 페이지 번호 버튼 -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end" th:with="startPage=${paging.startPage}, endPage=${paging.endPage}">
-            <li class="page-item"><a class="page-link" th:href="@{boardList(nowPage=${paging.startPage}-1)}" th:if="${paging.startPage} > 1">이전페이지</a></li>
-            <th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
-                <li class="page-item"><a class="page-link" th:href="@{/boardList(nowPage=${pageNum})}" th:text="${pageNum}">1</a></li>
-            </th:block>
-            <li class="page-item"><a class="page-link" th:href="@{/boardList(nowPage=${endPage}+1)}" th:if="${paging.endPage} < ${paging.lastPage}">이후페이지</a></li>
-        </ul>
-    </nav>
+    <div th:if="${paging} != null">
+        <nav aria-label="Page navigation example" >
+            <ul class="pagination justify-content-end" th:with="startPage=${paging.startPage}, endPage=${paging.endPage}">
+                <li class="page-item"><a class="page-link" th:href="@{boardList(nowPage=${paging.startPage}-1)}" th:if="${paging.startPage} > 1">이전페이지</a></li>
+                <th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+                    <li class="page-item"><a class="page-link" th:href="@{/boardList(nowPage=${pageNum})}" th:text="${pageNum}">1</a></li>
+                </th:block>
+                <li class="page-item"><a class="page-link" th:href="@{/boardList(nowPage=${endPage}+1)}" th:if="${paging.endPage} < ${paging.lastPage}">이후페이지</a></li>
+            </ul>
+        </nav>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
