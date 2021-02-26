@@ -30,6 +30,7 @@ public class BoardController {
     @Autowired
     CommentService commentService;
 
+    // 게시글 리스트 페이징해서 불러오기
     @GetMapping("/boardList")
     public String boardList(@RequestParam(value = "nowPage", required = false) String nowPage, Model model) {
         int total = boardService.getAllBoardCount();
@@ -55,7 +56,7 @@ public class BoardController {
         try {
             RestTemplate template = new RestTemplate();
             List<Board> boardList = template.getForObject("https://localhost:8081/boardList2?nowPage=" + paging.getNowPage(), List.class);
-            if (boardList != null) {
+            if (boardList != null) { // 저장된 글이 하나라도 있으면 model에 등록
                 model.addAttribute("boardList", boardList);
             }
             model.addAttribute("paging", paging);
@@ -65,6 +66,7 @@ public class BoardController {
         }
     }
 
+    // 게시글 불러오기
     @GetMapping("/board/{boardId}")
     public String board(@PathVariable("boardId") long boardId, Model model) {
         /*
