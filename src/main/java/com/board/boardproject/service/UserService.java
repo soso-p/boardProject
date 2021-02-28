@@ -35,19 +35,27 @@ public class UserService {
         } catch (IllegalStateException e) {
             return false;
         }
-        userMapper.save(user);
+        try {
+            userMapper.save(user);
+        } catch (Exception e) {
+            return false;
+        }
+
         return true;
     }
 
     public boolean login(User user) {
-        Optional<User> result = userMapper.findById(user.getId());
-        if (result.isEmpty()) {
-            return false;
-        }
-        if ((result.get().getId().equals(user.getId())) && (result.get().getPassword().equals(user.getPassword()))) {
-            return true;
-        }
-        else {
+        try {
+            Optional<User> result = userMapper.findById(user.getId());
+            if (result.isEmpty()) {
+                return false;
+            }
+            if ((result.get().getId().equals(user.getId())) && (result.get().getPassword().equals(user.getPassword()))) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
             return false;
         }
     }
