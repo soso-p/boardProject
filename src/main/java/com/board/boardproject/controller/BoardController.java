@@ -138,7 +138,7 @@ public class BoardController {
             parameters.add("writerId", board.getWriterId());
             try {
                 ResponseEntity<HttpStatus> result = template.postForEntity("https://localhost:8081/board2", parameters, HttpStatus.class);
-                if (result.getBody().is4xxClientError()) {
+                if (result.getStatusCode().is4xxClientError()) {
                     return "boardWrite";
                 }
                 return "redirect:/boardList";

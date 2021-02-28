@@ -19,8 +19,7 @@ public class BoardRestController {
     BoardService boardService;
 
     @GetMapping("/boardList2")
-    public List<Board> boardList(@RequestParam(value = "nowPage", required = false) String nowPage, Model model) {
-
+    public List<Board> boardList(@RequestParam(value = "nowPage", required = false) String nowPage) {
         int total = boardService.getAllBoardCount();
         Paging paging;
         if (nowPage != null) {
@@ -33,9 +32,6 @@ public class BoardRestController {
             paging = new Paging(total, 1, 10);
         }
 
-
-        model.addAttribute("boardList", boardService.findPage(paging));
-
         return boardService.findPage(paging);
     }
 
@@ -43,8 +39,9 @@ public class BoardRestController {
     @PostMapping("/board2")
     public ResponseEntity<HttpStatus> boardWrite(Board board) {
         boolean result = boardService.saveBoard(board);
-        if (result)
+        if (result) {
             return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+        }
         else
             return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
     }
