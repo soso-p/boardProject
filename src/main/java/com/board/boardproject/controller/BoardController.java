@@ -7,6 +7,8 @@ import com.board.boardproject.domain.User;
 import com.board.boardproject.repository.UserRepositorySupport;
 import com.board.boardproject.service.BoardService;
 import com.board.boardproject.service.CommentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -138,7 +140,7 @@ public class BoardController {
             parameters.add("writerId", board.getWriterId());
             try {
                 ResponseEntity<HttpStatus> result = template.postForEntity("https://localhost:8081/board2", parameters, HttpStatus.class);
-                if (result.getStatusCode().is4xxClientError()) {
+                if (result.getStatusCode().is4xxClientError()) { // new ResponseEntity<HttpStatus>(HttpStatus.OK)로 return이 올 경우 entity안에 들어간 HttpStatus는 body가 아닌 status로 들어가서 getStatusCode()로 꺼내야함
                     return "boardWrite";
                 }
                 return "redirect:/boardList";

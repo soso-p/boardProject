@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 60초마다 설정 파일의 변경을 확인 하여 변경시 갱신 -->
 <configuration scan="true" scanPeriod="60 seconds">
-    <property resource="application.properties"/>
+    <springProfile name="local">
+        <property resource="logback-local.properties"/>
+    </springProfile>
 
     <!--Environment 내의 프로퍼티들을 개별적으로 설정할 수도 있다.-->
     <property name="LOG_LEVEL" value="${logging.level.root}"/>
