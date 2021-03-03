@@ -79,7 +79,6 @@ public class BoardController {
         if (commentList != null) {
             model.addAttribute("commentList", commentList);
         }
-
          */
         try {
             RestTemplate template = new RestTemplate();
