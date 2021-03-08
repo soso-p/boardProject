@@ -61,7 +61,7 @@
             <th scope="row" th:text="${board.id}">1</th>
             <td><a th:href="@{/board/{boardId}(boardId = ${board.id})}" th:text="${board.title}">Mark</a></td>
             <td th:text="${board.writerId}">Otto</td>
-            <td th:text="${board.create_date}">@mdo</td>
+            <td th:text="${#calendars.format(board.create_date, 'yyyy-MM-dd')}">@mdo</td>
         </tr>
         <tr th:unless="${boardList} != null">
             <th scope="row" colspan="4" class="text-center">게시글이 존재하지 않습니다.</th>

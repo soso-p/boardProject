@@ -1,12 +1,11 @@
 package com.board.boardproject.controller;
 
-import com.board.boardproject.domain.Board;
-import com.board.boardproject.domain.Comment;
-import com.board.boardproject.domain.Paging;
-import com.board.boardproject.domain.User;
+import com.board.boardproject.domain.*;
 import com.board.boardproject.repository.UserRepositorySupport;
 import com.board.boardproject.service.BoardService;
 import com.board.boardproject.service.CommentService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class BoardController {
@@ -54,16 +55,21 @@ public class BoardController {
 
         return "boardList";
          */
-
         try {
             RestTemplate template = new RestTemplate();
-            List<Board> boardList = template.getForObject("https://localhost:8081/boardList2?nowPage=" + paging.getNowPage(), List.class);
+            ObjectMapper mapper = new ObjectMapper();
+            // type을 정확히 명시해줘야 함
+            List<Board> boardList = mapper.convertValue(template.getForObject("https://localhost:8081/boardList2?nowPage=" + paging.getNowPage(), List.class), new TypeReference<List<Board>>() {}); // 이 과정에서 date 포맷이 풀림
+            // List<BoardDTO> boardDTOList = boardList.stream().map(BoardDTO::new).collect(Collectors.toList()); // BoardDTO::new 라는 뜻은 BoardDTO의 생성자를 이용해서 만든다는 뜻
+
             if (boardList != null) { // 저장된 글이 하나라도 있으면 model에 등록
                 model.addAttribute("boardList", boardList);
             }
+
             model.addAttribute("paging", paging);
             return "boardList";
         } catch(Exception e) {
+            e.printStackTrace();
             return "boardList";
         }
     }
