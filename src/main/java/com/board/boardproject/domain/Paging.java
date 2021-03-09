@@ -56,9 +56,8 @@ public class Paging {
 
     // DB 쿼리에서 사용할 start, end값 계산
     public void calculateStartEnd(int nowPage, int cntPerPage) {
-        setEnd(nowPage * cntPerPage);
-        setStart(getEnd() - cntPerPage);
-        setEnd(getEnd() - getStart());
+        setStart((nowPage - 1) * cntPerPage);
+        setEnd(cntPerPage);
     }
 
     // getter, setter

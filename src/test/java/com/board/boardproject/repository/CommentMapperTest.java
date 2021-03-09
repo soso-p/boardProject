@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
+@ActiveProfiles("test")
 class CommentMapperTest {
     @Autowired
     CommentMapper commentMapper;
@@ -87,5 +89,21 @@ class CommentMapperTest {
         List<Comment> commentList = commentMapper.findByBoardId(board.getId());
 
         Assertions.assertThat(commentList.size()).isEqualTo(1);
+    }
+
+    @Test
+    void findNoOne() {
+        // given
+        Board board = new Board();
+        board.setWriterId("test");
+        board.setTitle("테스트 중!!!");
+        board.setContent("테스트 내용");
+        boardMapper.save(board);
+
+        // when
+        List<Comment> commentList = commentMapper.findByBoardId(board.getId());
+
+        // mybatis는 select 결과가 없으면 empty set을 반환
+        Assertions.assertThat(commentList.size()).isEqualTo(0);
     }
 }
