@@ -29,7 +29,8 @@ public class Paging {
 
     // 제일 마지막 페이지 계산
     public void calculateLastPage(int total, int cntPerPage) {
-        setLastPage((int) Math.ceil((double)total / (double)cntPerPage)); // ceil은 올림
+        int page = (int) Math.ceil((double)total / (double)cntPerPage); // ceil은 올림
+        setLastPage((page <= 0) ? 1 : page); // lastPage가 0이면 1로 만듬
     }
 
     // 시작, 끝 페이지 계산
