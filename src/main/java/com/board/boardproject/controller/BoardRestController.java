@@ -37,7 +37,7 @@ public class BoardRestController {
 
     // 게시글 등록
     @PostMapping("/board2")
-    public ResponseEntity<HttpStatus> boardWrite(Board board) {
+    public ResponseEntity<HttpStatus> boardWrite(@RequestBody Board board) {
         boolean result = boardService.saveBoard(board);
         if (result) {
             return new ResponseEntity<HttpStatus>(HttpStatus.OK);

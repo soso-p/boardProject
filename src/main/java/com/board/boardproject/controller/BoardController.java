@@ -1,5 +1,6 @@
 package com.board.boardproject.controller;
 
+import com.board.boardproject.Enum.SearchType;
 import com.board.boardproject.domain.*;
 import com.board.boardproject.repository.UserRepositorySupport;
 import com.board.boardproject.service.BoardService;
@@ -139,12 +140,19 @@ public class BoardController {
 
              */
             RestTemplate template = new RestTemplate();
+            /*
+            // content type이 x-www-form-urlencoded 방식
             MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
             parameters.add("title", board.getTitle());
             parameters.add("content", board.getContent());
             parameters.add("writerId", board.getWriterId());
+             */
+            // JSON으로 보내기
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Board> entity = new HttpEntity<>(board, headers);
             try {
-                ResponseEntity<HttpStatus> result = template.postForEntity("https://localhost:8081/board2", parameters, HttpStatus.class);
+                ResponseEntity<HttpStatus> result = template.postForEntity("https://localhost:8081/board2", entity, HttpStatus.class);
                 if (result.getStatusCode().is4xxClientError()) { // new ResponseEntity<HttpStatus>(HttpStatus.OK)로 return이 올 경우 entity안에 들어간 HttpStatus는 body가 아닌 status로 들어가서 getStatusCode()로 꺼내야함
                     return "boardWrite";
                 }

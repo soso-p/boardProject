@@ -46,6 +46,7 @@
 </nav>
 
 <div class="container">
+    <!-- input의 name 부분이 객체의 변수들과 매핑됨. ex) title -> board.title, content -> board.content -->
     <div class="alert alert-warning" role="alert" th:text="${error}" th:if="${error} != null"></div>
     <form method="post" th:action="@{/board}">
         <div class="form-group">
