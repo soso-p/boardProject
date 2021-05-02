@@ -61,11 +61,13 @@ public class SpringConfig {
     }
     */
 
+    // querydsl 설정
     @Bean
     public JPAQueryFactory jpaQueryFactory(EntityManager em) {
         return new JPAQueryFactory(em);
     }
 
+    // Spring Security 중 password encoder 빈 등록
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
