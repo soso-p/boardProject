@@ -36,6 +36,7 @@ public class BoardRestController {
     }
 
     // 게시글 등록
+    // JSON만 받음
     @PostMapping("/board2")
     public ResponseEntity<HttpStatus> boardWrite(@RequestBody Board board) {
         boolean result = boardService.saveBoard(board);

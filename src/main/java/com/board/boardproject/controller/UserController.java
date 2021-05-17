@@ -14,7 +14,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
@@ -67,7 +69,7 @@ public class UserController {
     }
 
     @PostMapping("/joinUser")
-    public String join(User user, Model model) {
+    public String join(User user, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         /*
         boolean result = userService.join(user);
         if (result) {
@@ -79,21 +81,27 @@ public class UserController {
         }
 
          */
-
-        RestTemplate template = new RestTemplate();
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-        parameters.add("id", user.getId());
-        parameters.add("password", user.getPassword());
-        try {
-            ResponseEntity<HttpStatus> result = template.postForEntity("https://localhost:8081/joinUser2", parameters, HttpStatus.class);
-            if (result.getBody().is4xxClientError()) {
+        if (user.getId().equals("") || user.getPassword().equals("")) { // id 혹은 password를 입력을 안 한 경우
+            String referer = request.getHeader("Referer");
+            redirectAttributes.addFlashAttribute("error", "id, password를 다 입력해주세요.");
+            return "redirect:" + referer;
+        }
+        else { // 둘 다 입력한 경우
+            RestTemplate template = new RestTemplate();
+            MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+            parameters.add("id", user.getId());
+            parameters.add("password", user.getPassword());
+            try {
+                ResponseEntity<HttpStatus> result = template.postForEntity("https://localhost:8081/joinUser2", parameters, HttpStatus.class);
+                if (result.getBody().is4xxClientError()) {
+                    model.addAttribute("message", "같은 아이디가 있습니다.");
+                    return "joinUser";
+                }
+                return "login";
+            } catch (Exception e) {
                 model.addAttribute("message", "같은 아이디가 있습니다.");
                 return "joinUser";
             }
-            return "login";
-        } catch (Exception e) {
-            model.addAttribute("message", "같은 아이디가 있습니다.");
-            return "joinUser";
         }
     }
 

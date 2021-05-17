@@ -47,7 +47,9 @@
 
 <!-- 회원가입 폼 -->
 <div class="container">
-    <div class="alert alert-warning" role="alert" th:text="${message}" th:if="${message} != null"></div>
+    <!-- 경고문 -->
+    <div class="alert alert-warning" role="alert" th:text="${error}" th:if="${error} != null"></div>
+    <!-- 회원가입 -->
     <form method="post" th:action="@{/joinUser}">
         <div class="form-group">
             <label for="id">id</label>

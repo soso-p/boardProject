@@ -125,6 +125,7 @@ public class BoardController {
     }
 
     // 게시글 등록
+    // JSON으로 보내기
     @PostMapping("/board")
     public String boardWrite(Model model, Board board, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (board.getTitle().equals("")|| board.getContent().equals("")) {
