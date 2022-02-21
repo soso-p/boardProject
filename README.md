@@ -1,5 +1,5 @@
 # boardProject
-Spring Boot를 이용해서 만든 게시판
+Spring Boot를 이용해서 만든 게시판!
 ![Untitled](https://user-images.githubusercontent.com/55385825/107005372-f8ce6100-67d2-11eb-8a0a-8006897a1ddf.png)
 
 ## 소개
